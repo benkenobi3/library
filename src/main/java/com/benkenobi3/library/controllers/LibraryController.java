@@ -1,19 +1,20 @@
 package com.benkenobi3.library.controllers;
 
 import com.benkenobi3.library.exceptions.NotFoundException;
+import com.benkenobi3.library.models.Book;
 import com.benkenobi3.library.models.Library;
-import org.springframework.context.annotation.Configuration;
+import com.benkenobi3.library.repos.BooksCrudRepository;
 import org.springframework.web.bind.annotation.*;
-import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
-@Configuration
-@EnableSwagger2
 @RestController
 @RequestMapping("library")
 public class LibraryController {
+
+    private BooksCrudRepository booksCrudRepository;
 
     private int counter = 0;
 
@@ -34,6 +35,22 @@ public class LibraryController {
         libraries.put(Integer.toString(counter), new Library(name));
         counter++;
         return libraries.get(Integer.toString(counter-1));
+    }
+
+    @PostMapping("{id}")
+    public Book addBook(@PathVariable String id, @RequestBody String bookId){
+
+        Library library = getLibById(id);
+
+        Optional<Book> bookOptional = booksCrudRepository.findById(Integer.parseInt(bookId));
+
+        if (bookOptional.isPresent()) {
+            library.add(bookOptional.get());
+            return bookOptional.get();
+        }
+        else
+            throw new NotFoundException();
+
     }
 
     @PutMapping("{id}")
