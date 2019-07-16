@@ -1,54 +1,70 @@
 package com.benkenobi3.library.models;
 
-import java.util.ArrayList;
-import java.util.List;
+import org.hibernate.annotations.DynamicUpdate;
 
+import javax.persistence.*;
+import java.util.*;
+
+@Entity
+@DynamicUpdate
+@Table(name = "BOOKS")
 public class Book {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "ID")
+    private int Id;
+
+    @Basic
+    @Column(name = "NAME")
     private String name;
 
-    private List<Author> authors = new ArrayList<>();
-    private List<Category> categories = new ArrayList<>();
+    @ManyToMany(fetch = FetchType.EAGER, mappedBy = "books")
+    private Set<Author> authors;
 
-    private List<String> publishers;
+    @ManyToMany(fetch = FetchType.EAGER, mappedBy = "books")
+    private Set<Category> categories;
+
+    @ManyToMany(fetch = FetchType.EAGER, mappedBy = "books")
+    private Set<Publisher> publishers;
+
+    @Basic
+    @Column(name = "DESCRIPTION")
     private String description;
-    private String gratitudes;
 
+    @Basic
+    @Column(name = "GRATITUDE")
+    private String gratitude;
+
+    @Basic
+    @Column(name = "EDITION")
     private int edition;
+
+    @Basic
+    @Column(name = "VOLUME")
     private int volume;
+
+    @Basic
+    @Column(name = "RELEASE_YEAR")
     private int releaseYear;
 
-    public Book() {}
-
-    public Book (String name, List<Author> authors, List<Category> categories,
-                 List<String> publishers,
-                 String description, String gratitudes,
-                 int edition, int volume, int releaseYear)
-    {
-        this.name = name;
-        this.authors = authors;
-        this.categories = categories;
-        this.publishers = publishers;
-        this.description = description;
-        this.gratitudes = gratitudes;
-        this.edition = edition;
-        this.volume = volume;
-        this.releaseYear = releaseYear;
+    public int getId() {
+        return Id;
     }
 
     public String getName() {
         return name;
     }
 
-    public List<Author> getAuthors() {
+    public Set<Author> getAuthors() {
         return authors;
     }
 
-    public List<Category> getCategories() {
+    public Set<Category> getCategories() {
         return categories;
     }
 
-    public List<String> getPublishers() {
+    public Set<Publisher> getPublishers() {
         return publishers;
     }
 
@@ -56,8 +72,8 @@ public class Book {
         return description;
     }
 
-    public String getGratitudes() {
-        return gratitudes;
+    public String getGratitude() {
+        return gratitude;
     }
 
     public int getEdition() {
@@ -71,4 +87,46 @@ public class Book {
     public int getReleaseYear() {
         return releaseYear;
     }
+
+    public void setId(int Id) {
+        this.Id = Id;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setAuthors(Set<Author> authors) {
+        this.authors = authors;
+    }
+
+    public void setCategories(Set<Category> categories) {
+        this.categories = categories;
+    }
+
+    public void setPublishers(Set<Publisher> publishers) {
+        this.publishers = publishers;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public void setGratitude(String gratitude) {
+        this.gratitude = gratitude;
+    }
+
+    public void setEdition(int edition) {
+        this.edition = edition;
+    }
+
+    public void setVolume(int volume) {
+        this.volume = volume;
+    }
+
+    public void setReleaseYear(int releaseYear) {
+        this.releaseYear = releaseYear;
+    }
+
+
 }

@@ -7,12 +7,12 @@ import java.util.Set;
 
 @Entity
 @DynamicUpdate
-@Table(name = "AUTHORS")
-public class Author extends MEntity {
+@Table(name = "PUBLISHERS")
+public class Publisher extends MEntity {
 
     @ManyToMany
-    @JoinTable(name = "author_book",
-            joinColumns = @JoinColumn(name="author_id", referencedColumnName="id"),
+    @JoinTable(name = "publisher_book",
+            joinColumns = @JoinColumn(name="publisher_id", referencedColumnName="id"),
             inverseJoinColumns = @JoinColumn(name="book_id", referencedColumnName="id")
     )
     private Set<Book> books;
@@ -21,18 +21,6 @@ public class Author extends MEntity {
 
     public void setBooks(Set<Book> books) {
         this.books = books;
-    }
-
-    @Basic
-    @Column(name = "LASTNAME")
-    private String lastname;
-
-    public String getLastname() {
-        return lastname;
-    }
-
-    public void setLastname(String lastname) {
-        this.lastname = lastname;
     }
 
 }
