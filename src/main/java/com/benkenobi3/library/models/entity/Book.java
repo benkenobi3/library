@@ -12,25 +12,25 @@ public class Book {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @JsonView(View.BOOK_VIEW.class)
+    @JsonView(View.LIBRARY_VIEW.class)
     private int id;
 
-    @JsonView(View.BOOK_VIEW.class)
+    @JsonView(View.LIBRARY_VIEW.class)
     private String name;
 
-    @JsonView(View.BOOK_VIEW.class)
+    @JsonView(View.LIBRARY_VIEW.class)
     private String description;
 
-    @JsonView(View.BOOK_VIEW.class)
+    @JsonView(View.LIBRARY_VIEW.class)
     private String gratitude;
 
-    @JsonView(View.BOOK_VIEW.class)
+    @JsonView(View.LIBRARY_VIEW.class)
     private int edition;
 
-    @JsonView(View.BOOK_VIEW.class)
+    @JsonView(View.LIBRARY_VIEW.class)
     private int volume;
 
-    @JsonView(View.BOOK_VIEW.class)
+    @JsonView(View.LIBRARY_VIEW.class)
     private int releaseYear;
 
     @ManyToMany(fetch = FetchType.LAZY, mappedBy = "books")

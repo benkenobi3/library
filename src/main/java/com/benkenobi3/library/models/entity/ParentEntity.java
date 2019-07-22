@@ -13,7 +13,7 @@ public abstract class ParentEntity {
     @JsonView(View.ID_VIEW.class)
     private int id;
 
-    @JsonView(View.BOOK_VIEW.class)
+    @JsonView(View.LIBRARY_VIEW.class)
     private String name;
 
     public void setId(int id) {
