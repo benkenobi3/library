@@ -20,7 +20,7 @@ public class BookController {
     private BookRepository bookRepository;
 
     @GetMapping
-    @JsonView(View.BOOK_VIEW.class)
+    @JsonView(View.LIBRARY_VIEW.class)
     public List<Book> getBooks() {
         return Lists.newArrayList(bookRepository.findAll());
     }
