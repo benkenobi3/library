@@ -40,6 +40,23 @@ public class BookController {
         return book;
     }
 
+    @PostMapping("{id}")
+    @JsonView(View.BOOK_VIEW.class)
+    public String addAuthorById(@PathVariable Integer id, @RequestBody Book book) {
+        return "nothing happens";
+    }
+
+    @PutMapping("{id}")
+    @JsonView(View.BOOK_VIEW.class)
+    public Book updBookById(@PathVariable Integer id, @RequestBody Book book) {
+        Optional<Book> bookOptional = bookRepository.findById(id);
+        bookOptional.orElseThrow(NotFoundException::new);
+        book.setId(bookOptional.get().getId());
+        bookRepository.delete(bookOptional.get());
+        bookRepository.save(book);
+        return book;
+    }
+
     @DeleteMapping("{id}")
     public void delBookById(@PathVariable Integer id) {
         Optional<Book> libOptional = bookRepository.findById(id);
