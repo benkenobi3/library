@@ -1,71 +1,79 @@
 package com.benkenobi3.library.controllers;
 
 import com.benkenobi3.library.exceptions.NotFoundException;
-import com.benkenobi3.library.models.Book;
-import com.benkenobi3.library.models.Library;
-import com.benkenobi3.library.repos.BooksCrudRepository;
+import com.benkenobi3.library.models.View;
+import com.benkenobi3.library.models.entity.Book;
+import com.benkenobi3.library.models.entity.Library;
+import com.benkenobi3.library.repositories.BookRepository;
+import com.benkenobi3.library.repositories.LibraryRepository;
+import com.fasterxml.jackson.annotation.JsonView;
+import com.google.common.collect.Lists;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.List;
 import java.util.Optional;
 
 @RestController
 @RequestMapping("library")
 public class LibraryController {
 
-    private BooksCrudRepository booksCrudRepository;
+    @Autowired
+    private LibraryRepository libraryRepository;
 
-    private int counter = 0;
-
-    private Map<String, Library> libraries = new HashMap<>();
+    @Autowired
+    private BookRepository bookRepository;
 
     @GetMapping
-    public Map<String, Library> getLibs() {return libraries;}
+    @JsonView(View.LIBRARY_VIEW.class)
+    public List<Library> getLibraries() {
+        return Lists.newArrayList(libraryRepository.findAll());
+    }
 
     @GetMapping("{id}")
-    public Library getLibById(@PathVariable String id) {
-        if (libraries.containsKey(id))
-            return libraries.get(id);
-        throw new NotFoundException();
+    @JsonView(View.BOOK_VIEW.class)
+    public Library getLibById(@PathVariable Integer id) {
+        Optional<Library> libOptional = libraryRepository.findById(id);
+        libOptional.orElseThrow(NotFoundException::new);
+        return libOptional.get();
     }
 
     @PostMapping
+    @JsonView(View.LIBRARY_VIEW.class)
     public Library createLib(@RequestBody String name) {
-        libraries.put(Integer.toString(counter), new Library(name));
-        counter++;
-        return libraries.get(Integer.toString(counter-1));
-    }
-
-    @PostMapping("{id}")
-    public Book addBook(@PathVariable String id, @RequestBody String bookId){
-
-        Library library = getLibById(id);
-
-        Optional<Book> bookOptional = booksCrudRepository.findById(Integer.parseInt(bookId));
-
-        if (bookOptional.isPresent()) {
-            library.add(bookOptional.get());
-            return bookOptional.get();
-        }
-        else
-            throw new NotFoundException();
-
-    }
-
-    @PutMapping("{id}")
-    public Library updateLibById(@PathVariable String id, @RequestBody String name) {
-        Library library = getLibById(id);
+        Library library = new Library();
         library.setName(name);
+        libraryRepository.save(library);
         return library;
     }
 
+    @PostMapping("{id}")
+    @JsonView(View.BOOK_VIEW.class)
+    public Library addBookById(@PathVariable Integer id, @RequestBody Integer book_id)
+    {
+        Optional<Library> libOptional = libraryRepository.findById(id);
+        libOptional.orElseThrow(NotFoundException::new);
+        Optional<Book> bookOptional = bookRepository.findById(book_id);
+        bookOptional.orElseThrow(NotFoundException::new);
+        libraryRepository.insertBook(id, book_id);
+        return libOptional.get();
+    }
+
+    @PutMapping("{id}")
+    @JsonView(View.LIBRARY_VIEW.class)
+    public Library updLibById(@PathVariable Integer id, @RequestBody String name) {
+        Optional<Library> libOptional = libraryRepository.findById(id);
+        libOptional.orElseThrow(NotFoundException::new);
+        libOptional.get().setName(name);
+        libraryRepository.save(libOptional.get());
+        return libOptional.get();
+    }
+
     @DeleteMapping("{id}")
-    public void deleteLibById(@PathVariable String id) {
-        if (libraries.containsKey(id))
-            libraries.remove(id);
-        else
-            throw new NotFoundException();
+    public void delLibById(@PathVariable Integer id) {
+        Optional<Library> libOptional = libraryRepository.findById(id);
+        libOptional.orElseThrow(NotFoundException::new);
+        libraryRepository.delete(libOptional.get());
     }
 
 }
