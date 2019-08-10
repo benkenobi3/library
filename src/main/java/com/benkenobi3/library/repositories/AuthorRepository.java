@@ -1,8 +1,8 @@
 package com.benkenobi3.library.repositories;
 
 import com.benkenobi3.library.models.entity.Author;
-import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface AuthorRepository extends CrudRepository<Author, Integer> {
+public interface AuthorRepository extends JpaRepository<Author, Integer> {
 
 }
