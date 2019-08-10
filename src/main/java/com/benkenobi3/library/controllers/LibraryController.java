@@ -8,6 +8,7 @@ import com.benkenobi3.library.repositories.BookRepository;
 import com.benkenobi3.library.repositories.LibraryRepository;
 import com.fasterxml.jackson.annotation.JsonView;
 import com.google.common.collect.Lists;
+import org.omg.CORBA.RepositoryIdHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -55,7 +56,8 @@ public class LibraryController {
         libOptional.orElseThrow(NotFoundException::new);
         Optional<Book> bookOptional = bookRepository.findById(book_id);
         bookOptional.orElseThrow(NotFoundException::new);
-        libraryRepository.insertBook(id, book_id);
+        libOptional.get().addBook(bookOptional.get());
+        bookOptional.get().addLibrary(libOptional.get());
         return libOptional.get();
     }
 

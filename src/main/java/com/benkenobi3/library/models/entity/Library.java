@@ -33,6 +33,10 @@ public class Library {
         name = "";
     }
 
+    public void addBook(Book book) {
+        books.add(book);
+    }
+
     public Set<Book> getBooks() {return books;}
 
     public void setBooks(Set<Book> books) {

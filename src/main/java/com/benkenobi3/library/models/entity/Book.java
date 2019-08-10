@@ -157,4 +157,9 @@ public class Book {
         this.library = library;
     }
 
+    public void addLibrary(Library lib)
+    {
+        library.add(lib);
+    }
+
 }

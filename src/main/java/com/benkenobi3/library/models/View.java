@@ -1,6 +1,6 @@
 package com.benkenobi3.library.models;
 
-public class View {
+public final class View {
     public interface LIBRARY_VIEW {}
     public interface BOOK_VIEW extends LIBRARY_VIEW{}
     public interface CATEGORY_VIEW extends BOOK_VIEW{}

@@ -64,4 +64,8 @@ public class BookController {
         bookRepository.delete(libOptional.get());
     }
 
+    public BookRepository getBookRepository() {
+        return bookRepository;
+    }
+
 }
