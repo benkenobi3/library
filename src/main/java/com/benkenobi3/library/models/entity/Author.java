@@ -9,18 +9,7 @@ import java.util.Set;
 @Entity
 public class Author extends ParentEntity {
 
-    protected Author() {}
-
-    @JsonView(View.BOOK_VIEW.class)
-    private String lastname;
-
-    public String getLastname() {
-        return lastname;
-    }
-
-    public void setLastname(String lastname) {
-        this.lastname = lastname;
-    }
+    public Author() {}
 
     @JsonView(View.AUTHOR_VIEW.class)
     @ManyToMany(fetch = FetchType.LAZY, mappedBy = "authors")
